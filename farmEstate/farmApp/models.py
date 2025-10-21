@@ -26,7 +26,7 @@ class Animales(models.Model):
     f_nacimiento = models.DateField()
     categoria_a = models.ForeignKey(TablaDatos, on_delete=models.CASCADE, related_name='categoria_animales')
     raza = models.ForeignKey(TablaDatos, on_delete=models.CASCADE, related_name='raza_animales')
-    genaro = models.ForeignKey(TablaDatos, on_delete=models.CASCADE, related_name='genero_animales')
+    genero = models.ForeignKey(TablaDatos, on_delete=models.CASCADE, related_name='genero_animales')
     n_partos = models.IntegerField()
 
     def __str__(self):
