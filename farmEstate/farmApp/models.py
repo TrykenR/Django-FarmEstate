@@ -1,8 +1,5 @@
 from django.db import models
 
-from django.db import models
-
-
 class TablaDatos(models.Model):
     nombre = models.CharField(max_length=20)
     jerarquia = models.IntegerField()
