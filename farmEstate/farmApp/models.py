@@ -22,7 +22,7 @@ class Animales(models.Model):
     categoria_a = models.ForeignKey(TablaDatos, on_delete=models.CASCADE, related_name='categoria_animales')
     raza = models.ForeignKey(TablaDatos, on_delete=models.CASCADE, related_name='raza_animales')
     genero = models.ForeignKey(TablaDatos, on_delete=models.CASCADE, related_name='genero_animales')
-    n_partos = models.IntegerField()
+    n_partos = models.IntegerField(null=True, blank=True)
 
 class Huertos(models.Model):
     categoria_h = models.ForeignKey(TablaDatos, on_delete=models.CASCADE, related_name='categoria_huertos')
