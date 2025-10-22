@@ -5,11 +5,17 @@ class TablaDatos(models.Model):
     jerarquia = models.IntegerField()
     padre = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
+    def __str__(self):
+        return self.nombre
+
 class Trabajadores(models.Model):
     nombre = models.CharField(max_length=50)
     telefono = models.CharField(max_length=30)
     cedula = models.CharField(max_length=20)
     sueldo = models.FloatField()
+
+    def __str__(self):
+        return f"({self.nombre} - Cédula: {self.cedula})"
 
 class Animales(models.Model):
     f_nacimiento = models.DateField()
@@ -29,6 +35,9 @@ class Producciones(models.Model):
     fecha_produccion = models.DateField()
     nombre = models.CharField(max_length=10)
     peso_cantidad = models.FloatField()
+
+    def __str__(self):
+        return self.nombre
 
 class ActividadesAnimales(models.Model):
     id_animales = models.ForeignKey(Animales, on_delete=models.CASCADE)
