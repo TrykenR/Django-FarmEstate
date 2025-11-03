@@ -1,0 +1,31 @@
+{% extends "farmApp/base.html" %}
+
+{% block title %}Trabajadores - FarmEstate{% endblock %}
+
+{% block content %}
+<h2>Listado de Trabajadores</h2>
+<a href="{% url 'crear_trabajador' %}" class="button">+ Nuevo Trabajador</a>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Cédula</th>
+      <th>Teléfono</th>
+      <th>Sueldo</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in trabajadores %}
+    <tr>
+      <td>{{ t.nombre }}</td>
+      <td>{{ t.cedula }}</td>
+      <td>{{ t.telefono }}</td>
+      <td>${{ t.sueldo }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4" style="text-align:center;">No hay trabajadores registrados.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

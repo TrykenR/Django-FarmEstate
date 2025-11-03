@@ -1,0 +1,33 @@
+{% extends "farmApp/base.html" %}
+
+{% block title %}Animales - FarmEstate{% endblock %}
+
+{% block content %}
+<h2>Listado de Animales</h2>
+<a href="{% url 'crear_animal' %}" class="button">+ Nuevo Animal</a>
+
+<table>
+  <thead>
+    <tr>
+      <th>Fecha de nacimiento</th>
+      <th>Categoría</th>
+      <th>Raza</th>
+      <th>Género</th>
+      <th>N° partos</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for a in animales %}
+    <tr>
+      <td>{{ a.f_nacimiento }}</td>
+      <td>{{ a.categoria_a }}</td>
+      <td>{{ a.raza }}</td>
+      <td>{{ a.genero }}</td>
+      <td>{{ a.n_partos }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" style="text-align:center;">No hay animales registrados.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
