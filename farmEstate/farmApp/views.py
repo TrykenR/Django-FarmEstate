@@ -10,7 +10,6 @@ def listar_trabajadores(request):
     trabajadores = Trabajadores.objects.all()
     return render(request, 'farmApp/trabajadores_list.html', {'trabajadores': trabajadores})
 
-
 def crear_trabajador(request):
     if request.method == 'POST':
         form = TrabajadoresForm(request.POST)
@@ -21,12 +20,10 @@ def crear_trabajador(request):
         form = TrabajadoresForm()
     return render(request, 'farmApp/trabajador_form.html', {'form': form})
 
-
 # --- Ejemplo similar para Animales ---
 def listar_animales(request):
     animales = Animales.objects.all()
     return render(request, 'farmApp/animales_list.html', {'animales': animales})
-
 
 def crear_animal(request):
     if request.method == 'POST':
