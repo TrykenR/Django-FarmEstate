@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #eaf6ea; /* verde muy suave */
+}
+
+/* Encabezado */
+header {
+    background-color: #3a7a3a; /* verde hoja */
+    color: white;
+    padding: 1.2em;
+    text-align: center;
+}
+
+/* Navegación */
+nav {
+    background-color: white;
+    border-bottom: 2px solid #3a7a3a;
+    padding: 0.8em;
+    text-align: center;
+}
+
+nav a {
+    margin: 0 15px;
+    color: #3a7a3a;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* Área principal */
+main {
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.08);
+}
+
+/* Footer */
+footer {
+    margin-top: 40px;
+    text-align: center;
+    padding: 10px;
+    background-color: #3a7a3a;
+    color: white;
+}
+
+/* Botones */
+.btn, button {
+    background: #3a7a3a;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    display: inline-block;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover, button:hover {
+    background: #2f602f;
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #c9cfc9;
+}
+
+th {
+    background-color: #eaf6ea;
+}
+
+tr:nth-child(even) {
+    background-color: #f3fbf3;
+}
+
+tr:hover {
+    background-color: #dceddc;
+}
+
+/* Inputs */
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}

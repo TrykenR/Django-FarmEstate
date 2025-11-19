@@ -1,14 +1,12 @@
 {% extends "farmApp/base.html" %}
-
-{% block title %}Nuevo Animal - FarmEstate{% endblock %}
+{% block title %}Registrar Animal{% endblock %}
 
 {% block content %}
-<h2>Registrar nuevo animal</h2>
+<h2>Registrar Animal</h2>
 
 <form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Guardar</button>
-  <a href="{% url 'listar_animales' %}" class="button">Cancelar</a>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn">Guardar</button>
 </form>
 {% endblock %}

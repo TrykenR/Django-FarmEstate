@@ -1,0 +1,11 @@
+<nav>
+    <a href="{% url 'home' %}">Inicio</a>
+    <a href="{% url 'listar_trabajadores' %}">Trabajadores</a>
+    <a href="{% url 'listar_animales' %}">Animales</a>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'salir' %}" style="float:right;">Salir</a>
+    {% else %}
+        <a href="{% url 'login' %}" style="float:right;">Ingresar</a>
+    {% endif %}
+</nav>
