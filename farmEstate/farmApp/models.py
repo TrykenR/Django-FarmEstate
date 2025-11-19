@@ -13,7 +13,6 @@ from .validators import (
     validate_fecha_no_futura
 )
 
-
 class TablaDatos(models.Model):
     """
     Tabla maestra para categorías, razas, géneros y otros datos de referencia.

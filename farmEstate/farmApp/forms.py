@@ -4,225 +4,127 @@ from .models import TablaDatos, Trabajadores, Animales, Huertos, Producciones, A
 class TablaDatosForm(forms.ModelForm):
     class Meta:
         model = TablaDatos
-        fields = [
-            'nombre', 
-            'jerarquia', 
-            'padre'
-        ]
+        fields = ['nombre', 'jerarquia', 'padre']
         widgets = {
-            'nombre': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Nombre del dato'
-            }),
-            'jerarquia': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Nivel de jerarquía'
-            }),
-            'padre': forms.Select(attrs={'class': 'form-control'}),
+            'jerarquia': forms.Select(choices=[
+                ('', '---------'),
+                (1, 'Categoría Animal'),
+                (2, 'Raza'),
+                (3, 'Género'),
+                (4, 'Categoría Huerto'),
+                (5, 'Categoría Producción'),
+            ])
         }
 
 class TrabajadoresForm(forms.ModelForm):
     class Meta:
         model = Trabajadores
-        fields = [
-            'nombre',
-            'telefono',
-            'cedula',
-            'sueldo'
-        ]
+        fields = ['nombre', 'telefono', 'cedula', 'sueldo']
         widgets = {
-            'nombre': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Nombre completo'
-            }),
-            'telefono': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': '+57 300 123 4567'
-            }),
-            'cedula': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Número de cédula'
-            }),
-            'sueldo': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Sueldo mensual',
-                'step': '0.01'
-            }),
-        }
-        labels = {
-            'nombre': 'Nombre completo',
-            'telefono': 'Teléfono',
-            'cedula': 'Cédula de ciudadanía',
-            'sueldo': 'Sueldo mensual (COP)'
+            'nombre': forms.TextInput(attrs={'placeholder': 'Nombre completo'}),
+            'telefono': forms.TextInput(attrs={'placeholder': '3001234567'}),
+            'cedula': forms.TextInput(attrs={'placeholder': 'Número de cédula'}),
+            'sueldo': forms.NumberInput(attrs={'placeholder': '0.00', 'step': '0.01'}),
         }
 
 class AnimalesForm(forms.ModelForm):
     class Meta:
         model = Animales
-        fields = [
-            'f_nacimiento', 
-            'categoria_a', 
-            'raza', 
-            'genero', 
-            'n_partos'
-        ]
+        fields = ['f_nacimiento', 'categoria_a', 'raza', 'genero', 'n_partos']
         widgets = {
-            'f_nacimiento': forms.DateInput(attrs={
-                'type': 'date',
-                'class': 'form-control'
-            }),
-            'categoria_a': forms.Select(attrs={'class': 'form-control'}),
-            'raza': forms.Select(attrs={'class': 'form-control'}),
-            'genero': forms.Select(attrs={'class': 'form-control'}),
-            'n_partos': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Número de partos',
-                'min': '0'
-            }),
+            'f_nacimiento': forms.DateInput(attrs={'type': 'date'}),
+            'n_partos': forms.NumberInput(attrs={'min': '0', 'placeholder': 'Opcional'}),
         }
         labels = {
-            'f_nacimiento': 'Fecha de nacimiento',
+            'f_nacimiento': 'Fecha de Nacimiento',
             'categoria_a': 'Categoría',
             'raza': 'Raza',
             'genero': 'Género',
-            'n_partos': 'Número de partos'
+            'n_partos': 'Número de Partos',
         }
-        help_texts = {
-            'n_partos': 'Dejar vacío si no aplica',
-        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Filtrar las opciones según jerarquía
+        self.fields['categoria_a'].queryset = TablaDatos.objects.filter(jerarquia=1).order_by('nombre')
+        self.fields['raza'].queryset = TablaDatos.objects.filter(jerarquia=2).order_by('nombre')
+        self.fields['genero'].queryset = TablaDatos.objects.filter(jerarquia=3).order_by('nombre')
+        
+        # Hacer n_partos opcional
+        self.fields['n_partos'].required = False
+        
+        # Añadir texto de ayuda
+        self.fields['n_partos'].help_text = 'Dejar vacío si no aplica (machos o animales sin partos)'
 
 class HuertosForm(forms.ModelForm):
     class Meta:
         model = Huertos
-        fields = [
-            'categoria_h',
-            'hectareas',
-            'fecha_p'
-        ]
+        fields = ['categoria_h', 'hectareas', 'fecha_p']
         widgets = {
-            'categoria_h': forms.Select(attrs={'class': 'form-control'}),
-            'hectareas': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Hectáreas',
-                'step': '0.01',
-                'min': '0'
-            }),
-            'fecha_p': forms.DateInput(attrs={
-                'type': 'date',
-                'class': 'form-control'
-            }),
+            'fecha_p': forms.DateInput(attrs={'type': 'date'}),
+            'hectareas': forms.NumberInput(attrs={'step': '0.01', 'min': '0'}),
         }
         labels = {
-            'categoria_h': 'Categoría del huerto',
+            'categoria_h': 'Categoría de Huerto',
             'hectareas': 'Hectáreas',
-            'fecha_p': 'Fecha de plantación'
+            'fecha_p': 'Fecha de Plantación',
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['categoria_h'].queryset = TablaDatos.objects.filter(jerarquia=4).order_by('nombre')
 
 class ProduccionesForm(forms.ModelForm):
     class Meta:
         model = Producciones
-        fields = [
-            'categoria_p',
-            'id_trabajadores',
-            'fecha_produccion',
-            'nombre',
-            'peso_cantidad'
-        ]
+        fields = ['categoria_p', 'id_trabajadores', 'fecha_produccion', 'nombre', 'peso_cantidad']
         widgets = {
-            'categoria_p': forms.Select(attrs={'class': 'form-control'}),
-            'id_trabajadores': forms.Select(attrs={'class': 'form-control'}),
-            'fecha_produccion': forms.DateInput(attrs={
-                'type': 'date',
-                'class': 'form-control'
-            }),
-            'nombre': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Nombre del producto'
-            }),
-            'peso_cantidad': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Peso o cantidad',
-                'step': '0.01',
-                'min': '0'
-            }),
+            'fecha_produccion': forms.DateInput(attrs={'type': 'date'}),
+            'peso_cantidad': forms.NumberInput(attrs={'step': '0.01', 'min': '0'}),
+            'nombre': forms.TextInput(attrs={'placeholder': 'Descripción del producto'}),
         }
         labels = {
-            'categoria_p': 'Categoría de producción',
-            'id_trabajadores': 'Trabajador responsable',
-            'fecha_produccion': 'Fecha de producción',
-            'nombre': 'Nombre del producto',
-            'peso_cantidad': 'Peso/Cantidad (kg)'
+            'categoria_p': 'Categoría de Producción',
+            'id_trabajadores': 'Trabajador Responsable',
+            'fecha_produccion': 'Fecha de Producción',
+            'nombre': 'Nombre/Descripción',
+            'peso_cantidad': 'Peso/Cantidad (kg)',
         }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['categoria_p'].queryset = TablaDatos.objects.filter(jerarquia=5).order_by('nombre')
 
 class ActividadesAnimalesForm(forms.ModelForm):
-    class Meta:  # ✅ CORREGIDO: Ahora tiene class Meta
+    class Meta:
         model = ActividadesAnimales
-        fields = [
-            'id_animales',
-            'id_trabajadores',
-            'descripcion',
-            'fecha',
-            'retorno'
-        ]
+        fields = ['id_animales', 'id_trabajadores', 'descripcion', 'fecha', 'retorno']
         widgets = {
-            'id_animales': forms.Select(attrs={'class': 'form-control'}),
-            'id_trabajadores': forms.Select(attrs={'class': 'form-control'}),
-            'descripcion': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 3,
-                'placeholder': 'Descripción de la actividad'
-            }),
-            'fecha': forms.DateInput(attrs={
-                'type': 'date',
-                'class': 'form-control'
-            }),
-            'retorno': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Retorno económico',
-                'step': '0.01'
-            }),
+            'fecha': forms.DateInput(attrs={'type': 'date'}),
+            'descripcion': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Describe la actividad...'}),
+            'retorno': forms.NumberInput(attrs={'min': '0'}),
         }
         labels = {
             'id_animales': 'Animal',
-            'id_trabajadores': 'Trabajador responsable',
+            'id_trabajadores': 'Trabajador',
             'descripcion': 'Descripción',
-            'fecha': 'Fecha de la actividad',
-            'retorno': 'Retorno (COP)'
+            'fecha': 'Fecha',
+            'retorno': 'Retorno/Costo',
         }
 
 class ActividadesHuertosForm(forms.ModelForm):
-    class Meta:  # ✅ CORREGIDO: Ahora tiene class Meta
+    class Meta:
         model = ActividadesHuertos
-        fields = [
-            'id_huerto',
-            'id_trabajadores',
-            'descripcion',
-            'fecha',
-            'retorno'
-        ]
+        fields = ['id_huerto', 'id_trabajadores', 'descripcion', 'fecha', 'retorno']
         widgets = {
-            'id_huerto': forms.Select(attrs={'class': 'form-control'}),
-            'id_trabajadores': forms.Select(attrs={'class': 'form-control'}),
-            'descripcion': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 3,
-                'placeholder': 'Descripción de la actividad'
-            }),
-            'fecha': forms.DateInput(attrs={
-                'type': 'date',
-                'class': 'form-control'
-            }),
-            'retorno': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Retorno económico',
-                'step': '0.01'
-            }),
+            'fecha': forms.DateInput(attrs={'type': 'date'}),
+            'descripcion': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Describe la actividad...'}),
+            'retorno': forms.NumberInput(attrs={'min': '0'}),
         }
         labels = {
             'id_huerto': 'Huerto',
-            'id_trabajadores': 'Trabajador responsable',
+            'id_trabajadores': 'Trabajador',
             'descripcion': 'Descripción',
-            'fecha': 'Fecha de la actividad',
-            'retorno': 'Retorno (COP)'
+            'fecha': 'Fecha',
+            'retorno': 'Retorno/Costo',
         }
-        

@@ -5,21 +5,42 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-# ========================================
-# VISTAS PÚBLICAS (sin autenticación)
-# ========================================
-
 def home(request):
-    """Página de inicio - Accesible para todos"""
     return render(request, 'farmApp/home.html')
 
+# --- CRUD básico de Trabajadores ---
+def listar_trabajadores(request):
+    trabajadores = Trabajadores.objects.all()
+    return render(request, 'farmApp/trabajadores_list.html', {'trabajadores': trabajadores})
+
+def crear_trabajador(request):
+    if request.method == 'POST':
+        form = TrabajadoresForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Trabajador creado exitosamente.')
+            return redirect('listar_trabajadores')
+    else:
+        form = TrabajadoresForm()
+    return render(request, 'farmApp/trabajador_form.html', {'form': form})
+
+# --- Ejemplo similar para Animales ---
+def listar_animales(request):
+    animales = Animales.objects.all()
+    return render(request, 'farmApp/animales_list.html', {'animales': animales})
+
+def crear_animal(request):
+    if request.method == 'POST':
+        form = AnimalesForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Animal registrado exitosamente.')
+            return redirect('listar_animales')
+    else:
+        form = AnimalesForm()
+    return render(request, 'farmApp/animal_form.html', {'form': form})
 
 def login_trabajador(request):
-    """Vista de login - Accesible para todos"""
-    # Si ya está autenticado, redirigir al dashboard
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-    
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -31,42 +52,40 @@ def login_trabajador(request):
 
             # Vinculamos trabajador
             trabajador = Trabajadores.objects.filter(usuario=user).first()
-            request.session["trabajador_id"] = trabajador.id if trabajador else None
 
-            messages.success(request, f'¡Bienvenido {user.username}!')
+            if trabajador:
+                request.session["trabajador_id"] = trabajador.id
+                messages.success(request, f'¡Bienvenido, {trabajador.nombre}!')
+            else:
+                messages.warning(request, 'Usuario sin trabajador vinculado. Contacte al administrador.')
+
             return redirect("dashboard")
+
         else:
-            messages.error(request, 'Usuario o contraseña incorrectos')
             return render(request, "farmApp/login.html", {
                 "error": "Usuario o contraseña incorrectos"
             })
 
     return render(request, "farmApp/login.html")
 
-
-# ========================================
-# VISTAS PROTEGIDAS - DASHBOARD
-# ========================================
-
-@login_required(login_url='login')
+@login_required
 def dashboard(request):
-    """Dashboard principal - Requiere autenticación"""
     trabajador = Trabajadores.objects.filter(usuario=request.user).first()
     
-    # Si el usuario no tiene trabajador asociado
+    # Si el usuario no tiene trabajador vinculado
     if not trabajador:
-        messages.warning(request, 'Tu usuario no está asociado a un trabajador. Contacta al administrador.')
-        logout(request)
-        return redirect('login')
+        messages.error(request, 'Tu usuario no está vinculado a un trabajador. Contacta al administrador.')
+        return redirect('home')
     
-    total_animales = Animales.objects.filter(activo=True).count()
-    total_huertos = Huertos.objects.filter(activo=True).count()
-    total_trabajadores = Trabajadores.objects.filter(activo=True).count()
+    total_animales = Animales.objects.count()
+    total_huertos = Huertos.objects.count()
+    total_trabajadores = Trabajadores.objects.count()
+    produccion_hoy = 0  # placeholder
     
-    # Usar las funciones de utils
-    from .utils import obtener_produccion_hoy, actividades_recientes
-    produccion_hoy = obtener_produccion_hoy()
-    actividades = actividades_recientes(trabajador=trabajador, limite=5)
+    # Obtener actividades del trabajador
+    actividades = ActividadesAnimales.objects.filter(
+        id_trabajadores=trabajador
+    ).order_by('-fecha')[:5]
 
     context = {
         "trabajador": trabajador,
@@ -78,14 +97,10 @@ def dashboard(request):
     }
     return render(request, "farmApp/dashboard.html", context)
 
-
-@login_required(login_url='login')
 def salir(request):
-    """Cerrar sesión"""
-    messages.info(request, 'Has cerrado sesión exitosamente')
     logout(request)
+    messages.info(request, 'Sesión cerrada correctamente.')
     return redirect("login")
-
 
 # ========================================
 # VISTAS PROTEGIDAS - TRABAJADORES
