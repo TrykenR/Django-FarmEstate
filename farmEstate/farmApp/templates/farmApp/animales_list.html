@@ -1,36 +1,54 @@
 {% extends "farmApp/base.html" %}
-{% block title %}Animales{% endblock %}
+{% block title %}Animales - FarmEstate{% endblock %}
 
 {% block content %}
-<h2>Listado de Animales</h2>
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin: 0;">🐄 Listado de Animales</h2>
+        <a class="btn" href="{% url 'crear_animal' %}">
+            ➕ Añadir Animal
+        </a>
+    </div>
 
-<a class="btn" href="{% url 'crear_animal' %}">+ Añadir Animal</a>
-
-<table>
-    <thead>
-        <tr>
-            <th>Nacimiento</th>
-            <th>Categoría</th>
-            <th>Raza</th>
-            <th>Género</th>
-            <th>Partos</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for a in animales %}
-        <tr>
-            <td>{{ a.f_nacimiento }}</td>
-            <td>{{ a.categoria_a }}</td>
-            <td>{{ a.raza }}</td>
-            <td>{{ a.genero }}</td>
-            <td>{{ a.n_partos }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5" style="text-align:center;">No hay animales registrados.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>🎂 Nacimiento</th>
+                    <th>📋 Categoría</th>
+                    <th>🧬 Raza</th>
+                    <th>⚧ Género</th>
+                    <th>🍼 Partos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in animales %}
+                <tr>
+                    <td>{{ a.f_nacimiento|date:"d/m/Y" }}</td>
+                    <td><span style="background: #e8f5e9; padding: 4px 10px; border-radius: 6px; font-size: 0.9rem;">{{ a.categoria_a }}</span></td>
+                    <td>{{ a.raza }}</td>
+                    <td>{{ a.genero }}</td>
+                    <td style="text-align: center;">
+                        {% if a.n_partos %}
+                            <strong>{{ a.n_partos }}</strong>
+                        {% else %}
+                            <span style="color: #999;">N/A</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align:center; padding: 60px;">
+                        <span style="font-size: 3rem; display: block; margin-bottom: 10px;">🐮</span>
+                        <p style="color: #4a6a4a;">No hay animales registrados.</p>
+                        <a href="{% url 'crear_animal' %}" class="btn" style="margin-top: 15px;">
+                            Registrar el primero
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

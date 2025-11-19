@@ -1,107 +1,97 @@
 {% extends "farmApp/base.html" %}
-{% block title %}Panel de Control{% endblock %}
+{% block title %}Panel de Control - FarmEstate{% endblock %}
 
 {% block content %}
 
-<h2 style="color:#3a7a3a;">Bienvenido, {{ trabajador.nombre }}</h2>
-<p style="color:#555;">Este es tu panel principal. Aquí puedes ver el estado general de la finca y tus últimas actividades.</p>
+<!-- ENCABEZADO DE BIENVENIDA -->
+<div class="card" style="background: linear-gradient(135deg, #2d6a3d 0%, #3a8a4d 100%); color: white; margin-bottom: 30px;">
+    <h2 style="color: white; margin-bottom: 10px;">👋 Bienvenido, {{ trabajador.nombre }}</h2>
+    <p style="color: rgba(255, 255, 255, 0.9); margin: 0;">
+        Este es tu panel principal. Aquí puedes ver el estado general de la finca y tus últimas actividades.
+    </p>
+</div>
 
-<!-- ===== TARJETAS KPI ===== -->
-<div style="
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-top: 25px;
-">
-
-    <div style="
-        background:#eaf6ea;
-        padding:20px;
-        text-align:center;
-        border-radius:10px;
-        box-shadow:0 0 5px rgba(0,0,0,0.1);
-    ">
-        <h3 style="color:#3a7a3a; margin-bottom:5px;">🐄 Animales</h3>
-        <p style="font-size:24px; font-weight:bold;">{{ total_animales }}</p>
+<!-- TARJETAS KPI -->
+<div class="grid-4">
+    <div class="kpi-card">
+        <span class="kpi-icon">🐄</span>
+        <h3>Animales</h3>
+        <p>{{ total_animales }}</p>
     </div>
 
-    <div style="
-        background:#eaf6ea;
-        padding:20px;
-        text-align:center;
-        border-radius:10px;
-        box-shadow:0 0 5px rgba(0,0,0,0.1);
-    ">
-        <h3 style="color:#3a7a3a; margin-bottom:5px;">🌱 Huertos</h3>
-        <p style="font-size:24px; font-weight:bold;">{{ total_huertos }}</p>
+    <div class="kpi-card">
+        <span class="kpi-icon">🌱</span>
+        <h3>Huertos</h3>
+        <p>{{ total_huertos }}</p>
     </div>
 
-    <div style="
-        background:#eaf6ea;
-        padding:20px;
-        text-align:center;
-        border-radius:10px;
-        box-shadow:0 0 5px rgba(0,0,0,0.1);
-    ">
-        <h3 style="color:#3a7a3a; margin-bottom:5px;">👨‍🌾 Trabajadores</h3>
-        <p style="font-size:24px; font-weight:bold;">{{ total_trabajadores }}</p>
+    <div class="kpi-card">
+        <span class="kpi-icon">👨‍🌾</span>
+        <h3>Trabajadores</h3>
+        <p>{{ total_trabajadores }}</p>
     </div>
 
-    <div style="
-        background:#eaf6ea;
-        padding:20px;
-        text-align:center;
-        border-radius:10px;
-        box-shadow:0 0 5px rgba(0,0,0,0.1);
-    ">
-        <h3 style="color:#3a7a3a; margin-bottom:5px;">📦 Producción</h3>
-        <p style="font-size:24px; font-weight:bold;">{{ produccion_hoy }} kg</p>
+    <div class="kpi-card">
+        <span class="kpi-icon">📦</span>
+        <h3>Producción Hoy</h3>
+        <p>{{ produccion_hoy }} <span style="font-size: 1.2rem; color: #4a6a4a;">kg</span></p>
     </div>
 </div>
 
-<!-- ===== ÚLTIMAS ACTIVIDADES ===== -->
-<h3 style="margin-top:40px; color:#3a7a3a;">Últimas actividades</h3>
+<!-- ÚLTIMAS ACTIVIDADES -->
+<div class="card mt-4">
+    <h3 style="color: #2d6a3d; margin-bottom: 20px;">📋 Últimas actividades</h3>
 
-{% if actividades %}
-<table>
-    <thead>
-        <tr>
-            <th>Descripción</th>
-            <th>Fecha</th>
-            <th>Retorno</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for act in actividades %}
-        <tr>
-            <td>{{ act.descripcion }}</td>
-            <td>{{ act.fecha }}</td>
-            <td>{{ act.retorno }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>No tienes actividades registradas recientemente.</p>
-{% endif %}
+    {% if actividades %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>📝 Descripción</th>
+                    <th>📅 Fecha</th>
+                    <th>💰 Retorno</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for act in actividades %}
+                <tr>
+                    <td>{{ act.descripcion }}</td>
+                    <td>{{ act.fecha|date:"d/m/Y" }}</td>
+                    <td>${{ act.retorno|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 40px; color: #4a6a4a;">
+        <span style="font-size: 3rem; display: block; margin-bottom: 10px;">📭</span>
+        <p>No tienes actividades registradas recientemente.</p>
+    </div>
+    {% endif %}
+</div>
 
-<!-- ===== ACCESOS RÁPIDOS ===== -->
-<h3 style="margin-top:40px; color:#3a7a3a;">Accesos rápidos</h3>
+<!-- ACCESOS RÁPIDOS -->
+<div class="card mt-4">
+    <h3 style="color: #2d6a3d; margin-bottom: 20px;">⚡ Accesos rápidos</h3>
+    
+    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+        <a class="btn" href="{% url 'listar_animales' %}">
+            🐄 Ver animales
+        </a>
 
-<div style="display:flex; gap:20px;">
+        <a class="btn" href="{% url 'listar_trabajadores' %}">
+            👨‍🌾 Ver trabajadores
+        </a>
 
-    <a class="btn" href="{% url 'listar_animales' %}">
-        🐄 Ver animales
-    </a>
+        <a class="btn btn-secondary" href="#">
+            📝 Registrar actividad
+        </a>
 
-    <a class="btn" href="{% url 'listar_trabajadores' %}">
-        👨‍🌾 Ver trabajadores
-    </a>
-
-    <a class="btn" href="#">
-        📝 Registrar actividad
-    </a>
-
+        <a class="btn btn-secondary" href="#">
+            📊 Ver reportes
+        </a>
+    </div>
 </div>
 
 {% endblock %}

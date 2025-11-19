@@ -1,33 +1,46 @@
 {% extends "farmApp/base.html" %}
-{% block title %}Trabajadores{% endblock %}
+{% block title %}Trabajadores - FarmEstate{% endblock %}
 
 {% block content %}
-<h2>Listado de Trabajadores</h2>
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin: 0;">👨‍🌾 Listado de Trabajadores</h2>
+        <a href="{% url 'crear_trabajador' %}" class="btn">
+            ➕ Añadir trabajador
+        </a>
+    </div>
 
-<a href="{% url 'crear_trabajador' %}" class="btn">+ Añadir trabajador</a>
-
-<table>
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Cédula</th>
-            <th>Teléfono</th>
-            <th>Sueldo</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for t in trabajadores %}
-        <tr>
-            <td>{{ t.nombre }}</td>
-            <td>{{ t.cedula }}</td>
-            <td>{{ t.telefono }}</td>
-            <td>${{ t.sueldo }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4" style="text-align:center;">No hay trabajadores registrados.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>👤 Nombre</th>
+                    <th>🆔 Cédula</th>
+                    <th>📞 Teléfono</th>
+                    <th>💰 Sueldo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in trabajadores %}
+                <tr>
+                    <td><strong>{{ t.nombre }}</strong></td>
+                    <td>{{ t.cedula }}</td>
+                    <td>{{ t.telefono }}</td>
+                    <td style="color: #2d6a3d; font-weight: 600;">${{ t.sueldo|floatformat:2 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align:center; padding: 60px;">
+                        <span style="font-size: 3rem; display: block; margin-bottom: 10px;">👥</span>
+                        <p style="color: #4a6a4a;">No hay trabajadores registrados.</p>
+                        <a href="{% url 'crear_trabajador' %}" class="btn" style="margin-top: 15px;">
+                            Registrar el primero
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
