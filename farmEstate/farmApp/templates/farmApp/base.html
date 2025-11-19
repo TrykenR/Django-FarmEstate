@@ -1,25 +1,55 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}FarmEstate{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'farmApp/css/styles.css' %}">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'farmApp/css/style.css' %}">
 </head>
 <body>
+    <!-- NAVBAR SUPERIOR -->
+    <nav>
+        <div class="nav-left">
+            <a href="{% url 'home' %}">Inicio</a>
+            <a href="{% url 'listar_trabajadores' %}">Trabajadores</a>
+            <a href="{% url 'listar_animales' %}">Animales</a>
+        </div>
 
-<header>
-    <h1>🌾 FarmEstate – Gestión Agropecuaria</h1>
-</header>
+        <div class="nav-right">
+            {% if user.is_authenticated %}
+                <a href="{% url 'salir' %}">Cerrar sesión</a>
+            {% else %}
+                <a href="{% url 'login' %}">Ingresar</a>
+            {% endif %}
+        </div>
+    </nav>
 
-{% include "farmApp/components/navbar.html" %}
+    <!-- MENSAJES GLOBALES -->
+    <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div style="
+                background: #eaf6ea;
+                border-left: 5px solid #3a7a3a;
+                padding: 12px;
+                margin-bottom: 20px;
+            ">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    </div>
 
-<main>
-    {% block content %}
-    {% endblock %}
-</main>
-
-{% include "farmApp/components/footer.html" %}
-
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+    <!-- FOOTER -->
+    <footer>
+        © 2025 FarmEstate
+    </footer>
 </body>
 </html>

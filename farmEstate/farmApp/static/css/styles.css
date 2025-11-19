@@ -1,29 +1,35 @@
+/* ======== ESTILOS BASE ======== */
+
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #eaf6ea; /* verde muy suave */
+    background-color: #f5fff5;
+    margin: 0;
+    padding: 0;
+    color: #2e482e;
 }
 
-/* Encabezado */
-header {
-    background-color: #3a7a3a; /* verde hoja */
-    color: white;
-    padding: 1.2em;
-    text-align: center;
+/* Contenedor principal */
+.container {
+    max-width: 1100px;
+    margin: 35px auto;
+    padding: 20px;
 }
 
-/* Navegación */
+/* ======== NAVBAR ======== */
+
 nav {
-    background-color: white;
-    border-bottom: 2px solid #3a7a3a;
-    padding: 0.8em;
-    text-align: center;
+    background: #3a7a3a;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-nav a {
-    margin: 0 15px;
-    color: #3a7a3a;
+nav .nav-left a,
+nav .nav-right a {
+    color: white;
     text-decoration: none;
+    margin-right: 18px;
     font-weight: bold;
 }
 
@@ -31,42 +37,44 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* Área principal */
-main {
-    max-width: 900px;
-    margin: 25px auto;
-    padding: 20px;
-    background: white;
+/* ======== TARJETAS / CARDS ======== */
+
+.card {
+    background: #eaf6ea;
+    padding: 22px;
     border-radius: 12px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.08);
+    box-shadow: 0 0 6px rgba(0,0,0,0.09);
+    margin-bottom: 20px;
 }
 
-/* Footer */
-footer {
-    margin-top: 40px;
-    text-align: center;
-    padding: 10px;
-    background-color: #3a7a3a;
-    color: white;
-}
+/* ======== BOTONES ======== */
 
-/* Botones */
-.btn, button {
+.btn {
     background: #3a7a3a;
     color: white;
-    padding: 10px 15px;
-    border-radius: 6px;
-    display: inline-block;
+    padding: 10px 17px;
+    border-radius: 8px;
     text-decoration: none;
-    border: none;
-    cursor: pointer;
+    display: inline-block;
+    margin: 5px 5px 5px 0;
+    transition: 0.2s;
 }
 
-.btn:hover, button:hover {
-    background: #2f602f;
+.btn:hover {
+    background: #2e5f2e;
 }
 
-/* Tablas */
+/* Botón rojo para eliminar */
+.btn-danger {
+    background: #a94442;
+}
+
+.btn-danger:hover {
+    background: #8b3836;
+}
+
+/* ======== TABLAS ======== */
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -74,27 +82,47 @@ table {
 }
 
 th, td {
-    padding: 10px;
-    border: 1px solid #c9cfc9;
+    padding: 12px;
+    border-bottom: 1px solid #c9e5c9;
 }
 
 th {
-    background-color: #eaf6ea;
+    background: #dff3df;
+    text-align: left;
 }
 
-tr:nth-child(even) {
-    background-color: #f3fbf3;
-}
+/* ======== FORMULARIOS ======== */
 
-tr:hover {
-    background-color: #dceddc;
-}
-
-/* Inputs */
-input, select {
+form input, form select {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 12px;
+    padding: 10px;
+    margin-bottom: 15px;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid #b4d8b4;
+    background: white;
+}
+
+form label {
+    font-weight: bold;
+    color: #2e482e;
+}
+
+/* ======== MENSAJES ======== */
+
+.alert {
+    background: #eaf6ea;
+    border-left: 5px solid #3a7a3a;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+/* ======== FOOTER ======== */
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #3a7a3a;
+    font-size: 14px;
+    margin-top: 50px;
 }
