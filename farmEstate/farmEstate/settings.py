@@ -122,3 +122,97 @@ STATICFILES_DIRS = [ BASE_DIR / "farmApp" / "static" ]
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 1. CONFIGURACIÓN DE LOGIN
+# -------------------------
+# Redirige automáticamente a los usuarios no autenticados
+LOGIN_URL = 'login'  # Nombre de la URL de login
+LOGIN_REDIRECT_URL = 'dashboard'  # A dónde va después de login exitoso
+LOGOUT_REDIRECT_URL = 'home'  # A dónde va después de logout
+
+# 2. CONFIGURACIÓN DE MENSAJES
+# ----------------------------
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
+
+# 3. CONFIGURACIÓN DE SEGURIDAD DE SESIONES
+# ------------------------------------------
+# Tiempo de expiración de sesión (en segundos)
+SESSION_COOKIE_AGE = 86400  # 24 horas
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # La sesión persiste al cerrar navegador
+SESSION_SAVE_EVERY_REQUEST = True  # Renueva la sesión en cada petición
+
+# 4. CONFIGURACIÓN DE COOKIES DE SESIÓN
+# --------------------------------------
+SESSION_COOKIE_HTTPONLY = True  # Las cookies solo se acceden vía HTTP, no JavaScript
+SESSION_COOKIE_SECURE = False  # Cambiar a True en producción (requiere HTTPS)
+SESSION_COOKIE_SAMESITE = 'Lax'  # Protección contra CSRF
+
+# 5. CONFIGURACIÓN CSRF
+# ---------------------
+CSRF_COOKIE_HTTPONLY = True  # Protección adicional contra XSS
+CSRF_COOKIE_SECURE = False  # Cambiar a True en producción (requiere HTTPS)
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+# 6. CONFIGURACIÓN DE SEGURIDAD ADICIONAL
+# ---------------------------------------
+SECURE_BROWSER_XSS_FILTER = True  # Activa filtro XSS del navegador
+X_FRAME_OPTIONS = 'DENY'  # Previene que el sitio se muestre en un iframe
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Previene MIME type sniffing
+
+# 7. CONFIGURACIÓN DE CACHÉ
+# -------------------------
+# Previene que información sensible se cachee
+CACHE_MIDDLEWARE_SECONDS = 0
+
+# ===============================================
+# CONFIGURACIÓN COMPLETA RECOMENDADA
+# ===============================================
+# Copia TODO esto al final de tu settings.py
+
+# === AUTENTICACIÓN ===
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'home'
+
+# === MENSAJES ===
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
+
+# === SESIONES ===
+SESSION_COOKIE_AGE = 86400  # 24 horas
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = False  # True en producción
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+# === CSRF ===
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = False  # True en producción
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+# === SEGURIDAD GENERAL ===
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# === FORMATO DE FECHA Y NÚMERO ===
+USE_THOUSAND_SEPARATOR = True
+THOUSAND_SEPARATOR = '.'
+DECIMAL_SEPARATOR = ','
+DATE_FORMAT = 'd/m/Y'
+DATETIME_FORMAT = 'd/m/Y H:i'

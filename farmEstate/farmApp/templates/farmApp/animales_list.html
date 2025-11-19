@@ -18,14 +18,19 @@
                     <th>📋 Categoría</th>
                     <th>🧬 Raza</th>
                     <th>⚧ Género</th>
-                    <th>🍼 Partos</th>
+                    <th style="text-align: center;">🍼 Partos</th>
+                    <th style="text-align: center;">⚙️ Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for a in animales %}
                 <tr>
                     <td>{{ a.f_nacimiento|date:"d/m/Y" }}</td>
-                    <td><span style="background: #e8f5e9; padding: 4px 10px; border-radius: 6px; font-size: 0.9rem;">{{ a.categoria_a }}</span></td>
+                    <td>
+                        <span style="background: #e8f5e9; padding: 4px 10px; border-radius: 6px; font-size: 0.9rem;">
+                            {{ a.categoria_a }}
+                        </span>
+                    </td>
                     <td>{{ a.raza }}</td>
                     <td>{{ a.genero }}</td>
                     <td style="text-align: center;">
@@ -35,10 +40,22 @@
                             <span style="color: #999;">N/A</span>
                         {% endif %}
                     </td>
+                    <td style="text-align: center;">
+                        <a href="{% url 'editar_animal' a.pk %}" 
+                           class="btn btn-secondary" 
+                           style="padding: 6px 12px; font-size: 0.85rem; margin: 2px;">
+                            ✏️ Editar
+                        </a>
+                        <a href="{% url 'eliminar_animal' a.pk %}" 
+                           class="btn btn-danger" 
+                           style="padding: 6px 12px; font-size: 0.85rem; margin: 2px;">
+                            🗑️ Eliminar
+                        </a>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5" style="text-align:center; padding: 60px;">
+                    <td colspan="6" style="text-align:center; padding: 60px;">
                         <span style="font-size: 3rem; display: block; margin-bottom: 10px;">🐮</span>
                         <p style="color: #4a6a4a;">No hay animales registrados.</p>
                         <a href="{% url 'crear_animal' %}" class="btn" style="margin-top: 15px;">

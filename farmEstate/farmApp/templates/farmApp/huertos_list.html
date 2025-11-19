@@ -1,12 +1,12 @@
 {% extends "farmApp/base.html" %}
-{% block title %}Trabajadores - FarmEstate{% endblock %}
+{% block title %}Huertos - FarmEstate{% endblock %}
 
 {% block content %}
 <div class="card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2 style="margin: 0;">👨‍🌾 Listado de Trabajadores</h2>
-        <a href="{% url 'crear_trabajador' %}" class="btn">
-            ➕ Añadir trabajador
+        <h2 style="margin: 0;">🌱 Listado de Huertos</h2>
+        <a class="btn" href="{% url 'crear_huerto' %}">
+            ➕ Añadir Huerto
         </a>
     </div>
 
@@ -14,27 +14,31 @@
         <table>
             <thead>
                 <tr>
-                    <th>👤 Nombre</th>
-                    <th>🆔 Cédula</th>
-                    <th>📞 Teléfono</th>
-                    <th>💰 Sueldo</th>
+                    <th>📋 Categoría</th>
+                    <th>📏 Hectáreas</th>
+                    <th>📅 Fecha Plantación</th>
+                    <th>📍 Ubicación</th>
                     <th style="text-align: center;">⚙️ Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                {% for t in trabajadores %}
+                {% for h in huertos %}
                 <tr>
-                    <td><strong>{{ t.nombre }}</strong></td>
-                    <td>{{ t.cedula }}</td>
-                    <td>{{ t.telefono }}</td>
-                    <td style="color: #2d6a3d; font-weight: 600;">${{ t.sueldo|floatformat:0 }}</td>
+                    <td>
+                        <span style="background: #e8f5e9; padding: 4px 10px; border-radius: 6px; font-size: 0.9rem;">
+                            {{ h.categoria_h }}
+                        </span>
+                    </td>
+                    <td><strong>{{ h.hectareas }} ha</strong></td>
+                    <td>{{ h.fecha_p|date:"d/m/Y" }}</td>
+                    <td>{{ h.ubicacion|default:"Sin especificar" }}</td>
                     <td style="text-align: center;">
-                        <a href="{% url 'editar_trabajador' t.pk %}" 
+                        <a href="{% url 'editar_huerto' h.pk %}" 
                            class="btn btn-secondary" 
                            style="padding: 6px 12px; font-size: 0.85rem; margin: 2px;">
                             ✏️ Editar
                         </a>
-                        <a href="{% url 'eliminar_trabajador' t.pk %}" 
+                        <a href="{% url 'eliminar_huerto' h.pk %}" 
                            class="btn btn-danger" 
                            style="padding: 6px 12px; font-size: 0.85rem; margin: 2px;">
                             🗑️ Eliminar
@@ -44,9 +48,9 @@
                 {% empty %}
                 <tr>
                     <td colspan="5" style="text-align:center; padding: 60px;">
-                        <span style="font-size: 3rem; display: block; margin-bottom: 10px;">👥</span>
-                        <p style="color: #4a6a4a;">No hay trabajadores registrados.</p>
-                        <a href="{% url 'crear_trabajador' %}" class="btn" style="margin-top: 15px;">
+                        <span style="font-size: 3rem; display: block; margin-bottom: 10px;">🌾</span>
+                        <p style="color: #4a6a4a;">No hay huertos registrados.</p>
+                        <a href="{% url 'crear_huerto' %}" class="btn" style="margin-top: 15px;">
                             Registrar el primero
                         </a>
                     </td>

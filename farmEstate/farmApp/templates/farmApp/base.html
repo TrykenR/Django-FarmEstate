@@ -6,7 +6,7 @@
     <title>{% block title %}FarmEstate{% endblock %}</title>
 
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'farmApp/css/styles.css' %}">
 </head>
 <body>
     <!-- NAVBAR SUPERIOR -->
@@ -14,8 +14,11 @@
         <div class="nav-container">
             <div class="nav-left">
                 <a href="{% url 'home' %}">🏠 Inicio</a>
-                <a href="{% url 'listar_trabajadores' %}">👨‍🌾 Trabajadores</a>
-                <a href="{% url 'listar_animales' %}">🐄 Animales</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'listar_trabajadores' %}">👨‍🌾 Trabajadores</a>
+                    <a href="{% url 'listar_animales' %}">🐄 Animales</a>
+                    <a href="{% url 'listar_huertos' %}">🌱 Huertos</a>
+                {% endif %}
             </div>
 
             <div class="nav-right">
@@ -48,9 +51,9 @@
     
     <!-- FOOTER -->
     <footer>
-        <p>🌱 © 2025 FarmEstate - Gestión Agrícola Inteligente</p>
+        <p>🌱 © 2025 FarmEstate</p>
         <p style="font-size: 0.85rem; margin-top: 8px; opacity: 0.7;">
-            Desarrollado con 💚 para la agricultura sostenible
+            Desarrollado para la agricultura sostenible
         </p>
     </footer>
 </body>
