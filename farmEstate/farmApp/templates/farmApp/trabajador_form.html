@@ -1,12 +1,13 @@
 {% extends "farmApp/base.html" %}
-
-{% block title %}Nuevo Trabajador - FarmEstate{% endblock %}
+{% block title %}Registrar Trabajador{% endblock %}
 
 {% block content %}
-<h2>Registrar nuevo trabajador</h2>
+<h2>Registrar Trabajador</h2>
+
 <form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Guardar</button>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn">Guardar</button>
 </form>
+
 {% endblock %}
